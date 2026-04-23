@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  
+  /* Modern Vibrant Color Palette */
+  --color-safe: #10b981;
+  --color-warn: #f59e0b;
+  --color-alert: #ef4444;
+  --color-info: #0ea5e9;
+  
+  /* Premium Gradient & Base Colors */
+  --color-primary: #06b6d4;
+  --color-primary-dark: #0891b2;
+  --color-secondary: #8b5cf6;
+  --color-accent: #ec4899;
+  
+  /* Background Gradients */
+  --bg-gradient-start: #0f172a;
+  --bg-gradient-mid: #1e1b4b;
+  --bg-gradient-end: #1a1633;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #1a1633 100%);
+  color: #f1f5f9;
+  font-family: var(--font-sans);
+  overflow: hidden;
+  touch-action: manipulation;
+  min-height: 100vh;
+}
+
+/* Premium Panel System */
+.bohr-panel {
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 0 40px rgba(6, 182, 212, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.bohr-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(139, 92, 246, 0.02) 100%);
+  pointer-events: none;
+}
+
+.bohr-panel:hover {
+  background: rgba(15, 23, 42, 0.6);
+  box-shadow: 
+    0 12px 48px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 60px rgba(6, 182, 212, 0.15);
+}
+
+/* Typography System */
+.text-label {
+  @apply text-xs font-bold uppercase tracking-[0.08em] text-slate-400;
+}
+
+.text-data {
+  @apply text-sm font-medium text-slate-100;
+}
+
+.text-title-lg {
+  @apply text-2xl font-bold text-white tracking-tight;
+}
+
+.text-title-sm {
+  @apply text-sm font-bold text-white tracking-tight;
+}
+
+.text-hint {
+  @apply text-xs font-medium text-slate-400;
+}
+
+/* Smooth Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(100, 116, 139, 0.1);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #06b6d4 0%, #8b5cf6 100%);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #0891b2 0%, #7c3aed 100%);
+}
+
+/* Map Leaflet Overrides */
+.bohr-popup .leaflet-popup-content-wrapper {
+  background: rgba(15, 23, 42, 0.95);
+  color: #fff;
+  border-radius: 16px;
+  padding: 0;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.bohr-popup .leaflet-popup-tip {
+  background: rgba(15, 23, 42, 0.95);
+}
+
+/* Selection Color */
+::selection {
+  background-color: rgba(6, 182, 212, 0.4);
+  color: #fff;
+}
+
+/* GSAP Animation Classes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(6, 182, 212, 0.6);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  .bohr-panel {
+    border-radius: 16px;
+  }
+  
+  .text-title-lg {
+    @apply text-xl;
+  }
+}
+
+@media (max-width: 640px) {
+  .text-label {
+    @apply text-[11px];
+  }
+  
+  .text-data {
+    @apply text-xs;
+  }
+}
