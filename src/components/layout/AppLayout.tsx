@@ -22,7 +22,7 @@ const AppLayout = () => {
   }, [isMobileMenuOpen]);
 
   return (
-    <div className="h-screen flex flex-col bg-linear-to-b from-slate-900 via-slate-950 to-slate-950 text-slate-50 font-sans selection:bg-cyan-500/30 overflow-hidden">
+    <div className="h-screen flex flex-col bg-slate-50 text-slate-800 font-sans selection:bg-cyan-500/30 overflow-hidden">
       <Topbar onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
 
       <div className="flex flex-1 overflow-hidden relative">
