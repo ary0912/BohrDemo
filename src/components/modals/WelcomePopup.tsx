@@ -18,13 +18,14 @@ const WelcomePopup = ({ isOpen, onClose }: WelcomePopupProps) => {
             className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-5000 cursor-pointer"
           />
           
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm z-5001 p-6 pointer-events-none"
-          >
-            <div className="bohr-panel bg-white p-6 sm:p-8 pointer-events-auto text-center relative overflow-hidden border border-slate-200 rounded-xl shadow-2xl">
+          <div className="fixed inset-0 z-5001 flex items-center justify-center p-4 sm:p-6 pointer-events-none">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="w-full max-w-sm pointer-events-none"
+            >
+              <div className="bohr-panel bg-white p-6 sm:p-8 pointer-events-auto text-center relative overflow-hidden border border-slate-200 rounded-xl shadow-2xl">
               <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-cyan-500/0 via-cyan-500/50 to-cyan-500/0" />
               <div className="absolute -top-32 -right-32 w-64 h-64 bg-cyan-100 blur-[100px] rounded-full" />
               
@@ -55,6 +56,7 @@ const WelcomePopup = ({ isOpen, onClose }: WelcomePopupProps) => {
               <p className="mt-4 sm:mt-6 text-label text-slate-400">Operational Telemetry v2.14</p>
             </div>
           </motion.div>
+        </div>
         </>
       )}
     </AnimatePresence>

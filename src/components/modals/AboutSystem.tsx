@@ -20,13 +20,14 @@ const AboutSystem = ({ isOpen, onClose }: AboutSystemProps) => {
           />
           
           {/* Modal */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl z-2001 p-6 pointer-events-none"
-          >
-            <div className="bohr-panel bg-white p-6 sm:p-8 md:p-10 pointer-events-auto overflow-hidden relative max-h-[85vh] md:max-h-[80vh] overflow-y-auto border border-slate-200 rounded-xl shadow-xl">
+          <div className="fixed inset-0 z-2001 flex items-center justify-center p-4 sm:p-6 pointer-events-none">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="w-full max-w-2xl pointer-events-none"
+            >
+              <div className="bohr-panel bg-white p-6 sm:p-8 md:p-10 pointer-events-auto overflow-hidden relative max-h-[85vh] md:max-h-[80vh] overflow-y-auto border border-slate-200 rounded-xl shadow-xl">
               <div className="absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-gradient-to-tl from-cyan-50 to-blue-50 blur-[100px] rounded-full -mr-20 sm:-mr-32 -mt-32" />
               
               <div className="flex justify-between items-start mb-6 sm:mb-8 relative z-10 gap-3">
@@ -86,6 +87,7 @@ const AboutSystem = ({ isOpen, onClose }: AboutSystemProps) => {
               </div>
             </div>
           </motion.div>
+        </div>
         </>
       )}
     </AnimatePresence>
