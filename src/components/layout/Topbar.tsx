@@ -18,7 +18,7 @@ const Topbar = ({ onMenuToggle }: TopbarProps) => {
       );
     }
   }, []);
-
+  return (
     <div ref={topbarRef} className="h-16 bohr-panel rounded-none border-0 flex items-center px-3 sm:px-4 md:px-8 justify-between relative shadow-sm bg-white/90 border-b border-slate-200" style={{ zIndex: 200 }}>
       <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-8 min-w-0">
         {/* MOBILE MENU TOGGLE */}
