@@ -3,6 +3,7 @@ import LeakMap from "../components/map/LeakMap";
 import LeakChart from "../components/dashboard/LeakChart";
 import LeakTable from "../components/dashboard/LeakTable";
 import ControlPanel from "../components/dashboard/ControlPanel";
+import KPIWidget from "../components/dashboard/KPIWidget";
 import { useMethaneLeaks } from "../hooks/useMethaneLeaks";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -119,10 +120,16 @@ const Dashboard = () => {
                 </button>
               </div>
               
-              <div className="flex flex-col gap-4 md:gap-6 h-full">
+              <div className="flex flex-col gap-4 md:gap-5 h-full">
+                {/* KPI Summary Row */}
+                <div className="flex-none">
+                  <KPIWidget leaks={filteredLeaks} />
+                </div>
+                {/* Live Telemetry Chart */}
                 <div className="flex-none">
                   <LeakChart leaks={filteredLeaks} />
                 </div>
+                {/* Detection Log Table */}
                 <div className="flex-1 min-h-0 overflow-hidden">
                   <LeakTable leaks={filteredLeaks} />
                 </div>
