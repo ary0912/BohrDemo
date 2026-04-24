@@ -42,12 +42,13 @@ const Sidebar = () => {
               ref={(el) => { navItemsRef.current[index] = el; }}
               to={index === 0 ? "/" : "#"} 
               className={({ isActive }) => 
-                `px-4 py-3 rounded-lg flex flex-col transition-all group relative ${
+                `px-4 py-3 rounded-lg flex flex-col transition-all group relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${
                   isActive && index === 0
                   ? "bg-cyan-50 border border-cyan-100 shadow-sm" 
                   : "hover:bg-slate-50 border border-transparent"
                 }`
               }
+              aria-current={index === 0 ? "page" : undefined}
             >
               <span className={`text-sm font-bold tracking-tight transition-colors ${index === 0 ? "text-cyan-700" : "text-slate-600 group-hover:text-cyan-600"}`}>
                 {node.label}
@@ -60,6 +61,7 @@ const Sidebar = () => {
                    animate={{ scale: [1, 1.2, 1] }}
                    transition={{ duration: 2, repeat: Infinity }}
                    className="absolute right-4 top-1/2 -translate-y-1/2 w-2 h-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full" 
+                   aria-hidden="true"
                  />
               )}
             </NavLink>

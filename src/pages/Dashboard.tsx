@@ -1,12 +1,13 @@
-import { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
 import LeakMap from "../components/map/LeakMap";
 import LeakChart from "../components/dashboard/LeakChart";
 import LeakTable from "../components/dashboard/LeakTable";
 import ControlPanel from "../components/dashboard/ControlPanel";
-import AboutSystem from "../components/modals/AboutSystem";
-import WelcomePopup from "../components/modals/WelcomePopup";
 import { useMethaneLeaks } from "../hooks/useMethaneLeaks";
 import { motion, AnimatePresence } from "framer-motion";
+
+const AboutSystem = React.lazy(() => import("../components/modals/AboutSystem"));
+const WelcomePopup = React.lazy(() => import("../components/modals/WelcomePopup"));
 
 const Dashboard = () => {
   const leaks = useMethaneLeaks();
@@ -133,10 +134,11 @@ const Dashboard = () => {
               <motion.button 
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsSidebarOpen(false)}
-                className="absolute top-1/2 -translate-y-1/2 -left-10 w-10 h-10 bg-white border border-slate-200 rounded-l-lg flex items-center justify-center text-slate-600 hover:text-cyan-600 hover:border-cyan-500/50 shadow-md transition-all z-50"
+                aria-label="Collapse analytics panel"
+                className="absolute top-1/2 -translate-y-1/2 -left-10 w-10 h-10 bg-white border border-slate-200 rounded-l-lg flex items-center justify-center text-slate-600 hover:text-cyan-600 hover:border-cyan-500/50 shadow-md transition-all z-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
                 title="Collapse panel"
               >
-                <span className="text-lg">→</span>
+                <span className="text-lg" aria-hidden="true">→</span>
               </motion.button>
             )}
           </motion.div>
@@ -153,10 +155,11 @@ const Dashboard = () => {
             exit={{ opacity: 0, x: 20 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsSidebarOpen(true)}
-            className="absolute top-1/2 -translate-y-1/2 right-0 w-10 h-10 bg-white border border-slate-200 rounded-l-lg flex items-center justify-center text-slate-600 hover:text-cyan-600 hover:border-cyan-500/50 shadow-md transition-all z-50"
+            aria-label="Expand analytics panel"
+            className="absolute top-1/2 -translate-y-1/2 right-0 w-10 h-10 bg-white border border-slate-200 rounded-l-lg flex items-center justify-center text-slate-600 hover:text-cyan-600 hover:border-cyan-500/50 shadow-md transition-all z-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
             title="Expand panel"
           >
-            <span className="text-lg">←</span>
+            <span className="text-lg" aria-hidden="true">←</span>
           </motion.button>
         )}
       </AnimatePresence>
@@ -164,8 +167,10 @@ const Dashboard = () => {
       {/* MODALS */}
       {isHydrated && (
         <div style={{ zIndex: 300 }}>
-          <WelcomePopup isOpen={isWelcomeOpen} onClose={() => setIsWelcomeOpen(false)} />
-          <AboutSystem isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+          <Suspense fallback={null}>
+            <WelcomePopup isOpen={isWelcomeOpen} onClose={() => setIsWelcomeOpen(false)} />
+            <AboutSystem isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+          </Suspense>
         </div>
       )}
     </div>

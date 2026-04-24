@@ -1,5 +1,6 @@
 import { MapContainer, TileLayer, CircleMarker, Popup, ZoomControl } from "react-leaflet";
 import type { Leak } from "../../types/leak";
+import React from "react";
 import "leaflet/dist/leaflet.css";
 
 const getColor = (severity: number) => {
@@ -81,4 +82,4 @@ const LeakMap = ({ leaks }: { leaks: Leak[] }) => {
   );
 };
 
-export default LeakMap;
+export default React.memo(LeakMap);

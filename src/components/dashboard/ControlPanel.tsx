@@ -1,6 +1,5 @@
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import gsap from "gsap";
-import type React from "react";
 
 interface ControlPanelProps {
   onOpenAbout: () => void;
@@ -46,22 +45,24 @@ const ControlPanel = ({ onOpenAbout, activeFilter, onFilterChange }: ControlPane
         <button 
           ref={(el) => { buttonRefs.current[0] = el; }}
           onClick={onOpenAbout}
-          className="flex items-center space-x-2 group cursor-pointer p-2 -m-2 hover:opacity-80 transition-opacity shrink-0"
+          aria-label="System Info"
+          className="flex items-center space-x-2 group cursor-pointer p-2 -m-2 hover:opacity-80 transition-opacity shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 rounded-lg"
         >
           <div className="w-8 h-8 rounded-lg bg-cyan-50 border border-cyan-200 flex items-center justify-center text-cyan-600 group-hover:text-cyan-700 group-hover:border-cyan-300 transition-all shadow-sm">
-            <span className="text-xs font-bold">i</span>
+            <span className="text-xs font-bold" aria-hidden="true">i</span>
           </div>
           <span className="hidden sm:block text-label text-cyan-700">System Info</span>
         </button>
 
         {/* Filters */}
         <div className="flex items-center space-x-2 md:space-x-3 flex-wrap md:flex-nowrap justify-center md:justify-start">
-          <span className="text-label hidden md:block text-slate-500">Severity</span>
-          <div className="flex space-x-2">
+          <span className="text-label hidden md:block text-slate-500" id="severity-label">Severity</span>
+          <div className="flex space-x-2" role="group" aria-labelledby="severity-label">
             <button 
               ref={(el) => { buttonRefs.current[1] = el; }}
               onClick={() => handleFilterClick(null, -1)}
-              className={`px-3 py-2 md:px-4 md:py-2 rounded-lg text-xs md:text-sm font-bold uppercase tracking-[0.06em] transition-all duration-300 ${
+              aria-pressed={activeFilter === null}
+              className={`px-3 py-2 md:px-4 md:py-2 rounded-lg text-xs md:text-sm font-bold uppercase tracking-[0.06em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${
                 activeFilter === null 
                 ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white ring-1 ring-cyan-500/50 shadow-md shadow-cyan-500/20" 
                 : "text-slate-500 hover:text-cyan-600 hover:bg-slate-50 bg-white border border-slate-200"
@@ -74,7 +75,8 @@ const ControlPanel = ({ onOpenAbout, activeFilter, onFilterChange }: ControlPane
                 key={f.label}
                 ref={(el) => { buttonRefs.current[idx + 2] = el; }}
                 onClick={() => handleFilterClick(f.severity, idx)}
-                className={`px-3 py-2 md:px-4 md:py-2 rounded-lg text-xs md:text-sm font-bold uppercase tracking-[0.06em] flex items-center space-x-1.5 transition-all duration-300 ${
+                aria-pressed={activeFilter === f.severity}
+                className={`px-3 py-2 md:px-4 md:py-2 rounded-lg text-xs md:text-sm font-bold uppercase tracking-[0.06em] flex items-center space-x-1.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${
                   activeFilter === f.severity 
                   ? "ring-1 ring-inset shadow-md bg-white" 
                   : "hover:opacity-75 bg-white border border-slate-200"
@@ -87,7 +89,7 @@ const ControlPanel = ({ onOpenAbout, activeFilter, onFilterChange }: ControlPane
                   '--tw-ring-color': `${f.color}40`
                 } as React.CSSProperties}
               >
-                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: f.color }} />
+                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: f.color }} aria-hidden="true" />
                 <span className="hidden xs:inline">{f.label}</span>
                 <span className="xs:hidden uppercase">{f.label.slice(0, 3)}</span>
               </button>
@@ -99,4 +101,4 @@ const ControlPanel = ({ onOpenAbout, activeFilter, onFilterChange }: ControlPane
   );
 };
 
-export default ControlPanel;
+export default React.memo(ControlPanel);

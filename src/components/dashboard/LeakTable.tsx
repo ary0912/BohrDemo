@@ -108,4 +108,4 @@ const LeakTable = ({ leaks }: { leaks: Leak[] }) => {
   );
 };
 
-export default LeakTable;
+export default React.memo(LeakTable);

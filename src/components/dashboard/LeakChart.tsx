@@ -1,6 +1,6 @@
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import type { Leak } from "../../types/leak";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 const LeakChart = ({ leaks }: { leaks: Leak[] }) => {
@@ -88,4 +88,4 @@ const LeakChart = ({ leaks }: { leaks: Leak[] }) => {
   );
 };
 
-export default LeakChart;
+export default React.memo(LeakChart);
