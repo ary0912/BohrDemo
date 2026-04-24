@@ -20,18 +20,6 @@
   --bg-gradient-start: #0f172a;
   --bg-gradient-mid: #1e1b4b;
   --bg-gradient-end: #1a1633;
-  
-  /* Z-INDEX LAYERING SYSTEM (Mobile-First) */
-  --z-base: 0;
-  --z-map: 0;
-  --z-map-overlay: 5;
-  --z-floating-button: 15;
-  --z-panels: 20;
-  --z-control-panel: 25;
-  --z-mobile-menu-backdrop: 100;
-  --z-mobile-menu: 101;
-  --z-topbar: 200;
-  --z-modal: 300;
 }
 
 body {
@@ -194,15 +182,3 @@ body {
     @apply text-xs;
   }
 }
-
-/* Z-INDEX HELPER CLASSES */
-.z-base { z-index: var(--z-base); }
-.z-map { z-index: var(--z-map); }
-.z-map-overlay { z-index: var(--z-map-overlay); }
-.z-floating-button { z-index: var(--z-floating-button); }
-.z-panels { z-index: var(--z-panels); }
-.z-control-panel { z-index: var(--z-control-panel); }
-.z-mobile-menu-backdrop { z-index: var(--z-mobile-menu-backdrop); }
-.z-mobile-menu { z-index: var(--z-mobile-menu); }
-.z-topbar { z-index: var(--z-topbar); }
-.z-modal { z-index: var(--z-modal); }

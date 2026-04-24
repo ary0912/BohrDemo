@@ -40,13 +40,13 @@ const Dashboard = () => {
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-linear-to-br from-slate-950 via-indigo-950/20 to-slate-950">
-      {/* FULL-CANVAS MAP (FOUNDATION - z-base) */}
-      <div className="absolute inset-0 z-map">
+      {/* FULL-CANVAS MAP (FOUNDATION) */}
+      <div className="absolute inset-0" style={{ zIndex: 0 }}>
         <LeakMap leaks={filteredLeaks} />
       </div>
 
-      {/* PRIMARY CONTROLS (FLOATING - TOPMOST on mobile, LEFT on desktop) */}
-      <div className="absolute top-4 md:top-6 left-1/2 -translate-x-1/2 md:left-auto md:-translate-x-0 z-control-panel md:right-6 md:bottom-auto">
+      {/* PRIMARY CONTROLS (FLOATING) */}
+      <div className="absolute top-4 md:top-6 left-1/2 -translate-x-1/2 md:left-auto md:-translate-x-0 md:right-6 md:bottom-auto" style={{ zIndex: 25 }}>
         <ControlPanel 
           onOpenAbout={() => setIsAboutOpen(true)}
           activeFilter={filterSeverity}
@@ -62,7 +62,8 @@ const Dashboard = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: "spring", damping: 25, stiffness: 400 }}
-            className="absolute z-panels bottom-0 md:top-0 md:bottom-auto right-0 h-auto md:h-full w-full md:w-130 p-3 sm:p-4 md:p-8 flex flex-col gap-3 sm:gap-4 md:gap-6 pointer-events-none"
+            className="absolute bottom-0 md:top-0 md:bottom-auto right-0 h-auto md:h-full w-full md:w-130 p-3 sm:p-4 md:p-8 flex flex-col gap-3 sm:gap-4 md:gap-6 pointer-events-none"
+            style={{ zIndex: 20 }}
           >
              <div className="pointer-events-auto flex flex-col max-h-55 md:max-h-none md:h-full gap-3 sm:gap-4 md:gap-6 overflow-y-auto md:overflow-visible custom-scrollbar">
                 <div className="flex-none">
@@ -76,8 +77,6 @@ const Dashboard = () => {
              {/* CLOSE BUTTON (VISIBLE on all screens) */}
              <motion.button 
                onClick={() => setIsSidebarOpen(false)}
-               whileHover={{ scale: 1.1 }}
-               whileTap={{ scale: 0.95 }}
                className="md:absolute md:top-8 md:-left-12 pointer-events-auto w-full md:w-10 h-10 bg-linear-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur border border-cyan-500/30 rounded-lg md:rounded-lg flex items-center justify-center text-cyan-400 hover:text-cyan-300 hover:border-cyan-500/50 transition-all hover:bg-linear-to-r hover:from-cyan-500/30 hover:to-purple-500/30 group text-sm font-bold"
                title="Close panel"
              >
@@ -94,10 +93,9 @@ const Dashboard = () => {
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
           onClick={() => setIsSidebarOpen(true)}
-          className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 md:hidden z-floating-button w-12 h-12 sm:w-14 sm:h-14 bg-linear-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-slate-950 hover:text-white transition-all shadow-xl font-bold text-lg"
+          className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 md:hidden w-12 h-12 sm:w-14 sm:h-14 bg-linear-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-slate-950 hover:text-white transition-all shadow-xl font-bold text-lg"
+          style={{ zIndex: 15 }}
         >
            📊
         </motion.button>
@@ -110,7 +108,8 @@ const Dashboard = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={() => setIsSidebarOpen(false)}
-          className="hidden md:flex absolute top-1/2 -translate-y-1/2 right-0 z-floating-button w-10 h-10 bg-linear-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 rounded-l-lg items-center justify-center text-cyan-400 hover:text-cyan-300 hover:border-cyan-500/50 transition-all hover:bg-linear-to-r hover:from-cyan-500/30 hover:to-purple-500/30"
+          className="hidden md:flex absolute top-1/2 -translate-y-1/2 right-0 w-10 h-10 bg-linear-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 rounded-l-lg items-center justify-center text-cyan-400 hover:text-cyan-300 hover:border-cyan-500/50 transition-all hover:bg-linear-to-r hover:from-cyan-500/30 hover:to-purple-500/30"
+          style={{ zIndex: 15 }}
           title="Close panel (keyboard: ESC)"
         >
           <span>→</span>
@@ -118,8 +117,10 @@ const Dashboard = () => {
       )}
 
       {/* SYSTEM MODALS & POPUPS (Highest z-index) */}
-      <WelcomePopup isOpen={isWelcomeOpen} onClose={() => setIsWelcomeOpen(false)} />
-      <AboutSystem isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+      <div style={{ zIndex: 300 }}>
+        <WelcomePopup isOpen={isWelcomeOpen} onClose={() => setIsWelcomeOpen(false)} />
+        <AboutSystem isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+      </div>
     </div>
   );
 };
