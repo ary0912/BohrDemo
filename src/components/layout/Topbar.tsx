@@ -20,7 +20,7 @@ const Topbar = ({ onMenuToggle }: TopbarProps) => {
   }, []);
 
   return (
-    <div ref={topbarRef} className="h-16 bohr-panel rounded-none border-0 flex items-center px-3 sm:px-4 md:px-8 justify-between relative z-3000 shadow-xl bg-linear-to-r from-slate-950/50 to-indigo-950/20 border-b border-cyan-500/10">
+    <div ref={topbarRef} className="h-16 bohr-panel rounded-none border-0 flex items-center px-3 sm:px-4 md:px-8 justify-between relative z-topbar shadow-xl bg-linear-to-r from-slate-950/50 to-indigo-950/20 border-b border-cyan-500/10">
       <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-8 min-w-0">
         {/* MOBILE MENU TOGGLE */}
         <button 

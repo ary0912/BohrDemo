@@ -40,7 +40,7 @@ const ControlPanel = ({ onOpenAbout, activeFilter, onFilterChange }: ControlPane
   };
 
   return (
-    <div ref={containerRef} className="absolute top-4 md:top-6 left-1/2 -translate-x-1/2 z-1001 w-[calc(100%-1rem)] md:w-[calc(100%-3rem)] max-w-3xl pointer-events-none px-2 md:px-0">
+    <div ref={containerRef} className="w-[calc(100%-1rem)] md:w-[calc(100%-3rem)] max-w-3xl pointer-events-none px-2 md:px-0">
       <div className="bohr-panel px-4 md:px-6 py-3 md:py-4 flex flex-col md:flex-row items-center justify-between md:justify-start md:space-x-6 md:space-y-0 space-y-3 pointer-events-auto gap-3 md:gap-0">
         {/* Info Button */}
         <button 

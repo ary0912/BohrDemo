@@ -48,14 +48,14 @@ const AppLayout = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="absolute inset-0 bg-slate-950/70 backdrop-blur-md z-2000"
+                className="absolute inset-0 bg-slate-950/70 backdrop-blur-md z-mobile-menu-backdrop"
               />
               <motion.div 
                 initial={{ x: "-100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "-100%" }}
                 transition={{ type: "spring", damping: 25, stiffness: 400 }}
-                className="absolute inset-y-0 left-0 w-72 z-2001 p-4 overflow-y-auto"
+                className="absolute inset-y-0 left-0 w-72 z-mobile-menu p-4 overflow-y-auto"
               >
                 <Sidebar />
               </motion.div>

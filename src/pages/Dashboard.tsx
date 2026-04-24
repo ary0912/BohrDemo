@@ -39,64 +39,85 @@ const Dashboard = () => {
   }, [leaks, filterSeverity]);
 
   return (
-    <div className="relative h-full w-full overflow-hidden flex flex-col lg:flex-row bg-linear-to-br from-slate-950 via-indigo-950/20 to-slate-950">
-      {/* FULL-CANVAS MAP (FOUNDATION) */}
-      <div className="absolute inset-0 z-0">
+    <div className="relative h-full w-full overflow-hidden bg-linear-to-br from-slate-950 via-indigo-950/20 to-slate-950">
+      {/* FULL-CANVAS MAP (FOUNDATION - z-base) */}
+      <div className="absolute inset-0 z-map">
         <LeakMap leaks={filteredLeaks} />
       </div>
 
-      {/* PRIMARY CONTROLS (FLOATING) */}
-      <ControlPanel 
-        onOpenAbout={() => setIsAboutOpen(true)}
-        activeFilter={filterSeverity}
-        onFilterChange={setFilterSeverity}
-      />
+      {/* PRIMARY CONTROLS (FLOATING - TOPMOST on mobile, LEFT on desktop) */}
+      <div className="absolute top-4 md:top-6 left-1/2 -translate-x-1/2 md:left-auto md:-translate-x-0 z-control-panel md:right-6 md:bottom-auto">
+        <ControlPanel 
+          onOpenAbout={() => setIsAboutOpen(true)}
+          activeFilter={filterSeverity}
+          onFilterChange={setFilterSeverity}
+        />
+      </div>
 
-      {/* OVERLAY ANALYTICS PANEL (SECONDARY LAYER) */}
+      {/* ANALYTICS PANEL - DESKTOP: Right sidebar | MOBILE: Bottom sheet */}
       <AnimatePresence>
         {isSidebarOpen && (
           <motion.div 
-            initial={{ opacity: 0, x: 20, scale: 0.95 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: 20, scale: 0.95 }}
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: "spring", damping: 25, stiffness: 400 }}
-            className="absolute bottom-0 md:bottom-auto md:top-0 right-0 h-55 sm:h-60 md:h-full w-full md:w-130 z-10 p-3 sm:p-4 md:p-8 flex flex-col gap-3 sm:gap-4 md:gap-6 pointer-events-none overflow-y-auto md:overflow-visible"
+            className="absolute z-panels bottom-0 md:top-0 md:bottom-auto right-0 h-auto md:h-full w-full md:w-130 p-3 sm:p-4 md:p-8 flex flex-col gap-3 sm:gap-4 md:gap-6 pointer-events-none"
           >
-             <div className="pointer-events-auto flex flex-col h-full gap-3 sm:gap-4 md:gap-6">
+             <div className="pointer-events-auto flex flex-col max-h-55 md:max-h-none md:h-full gap-3 sm:gap-4 md:gap-6 overflow-y-auto md:overflow-visible custom-scrollbar">
                 <div className="flex-none">
                   <LeakChart leaks={filteredLeaks} />
                 </div>
-                <div className="flex-1 overflow-hidden">
+                <div className="flex-1 min-h-32 md:overflow-hidden">
                   <LeakTable leaks={filteredLeaks} />
                 </div>
              </div>
              
-             {/* TOGGLE BUTTON (DESKTOP) */}
-             <button 
+             {/* CLOSE BUTTON (VISIBLE on all screens) */}
+             <motion.button 
                onClick={() => setIsSidebarOpen(false)}
-               className="hidden md:flex absolute top-8 -left-12 w-10 h-10 bg-linear-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur border border-cyan-500/30 rounded-lg items-center justify-center text-cyan-400 hover:text-cyan-300 hover:border-cyan-500/50 transition-all pointer-events-auto hover:bg-linear-to-r hover:from-cyan-500/30 hover:to-purple-500/30 group"
-               title="Hide panel"
+               whileHover={{ scale: 1.1 }}
+               whileTap={{ scale: 0.95 }}
+               className="md:absolute md:top-8 md:-left-12 pointer-events-auto w-full md:w-10 h-10 bg-linear-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur border border-cyan-500/30 rounded-lg md:rounded-lg flex items-center justify-center text-cyan-400 hover:text-cyan-300 hover:border-cyan-500/50 transition-all hover:bg-linear-to-r hover:from-cyan-500/30 hover:to-purple-500/30 group text-sm font-bold"
+               title="Close panel"
              >
-                <span className="text-sm font-bold group-hover:scale-110 transition-transform">✕</span>
-             </button>
+                <span className="md:hidden">Hide Analytics</span>
+                <span className="hidden md:block">✕</span>
+             </motion.button>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* MOBILE REVEAL BUTTON */}
+      {/* MOBILE REVEAL BUTTON - Only shown when sidebar is closed */}
       {!isSidebarOpen && (
         <motion.button 
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => setIsSidebarOpen(true)}
-          className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 md:top-1/2 md:right-0 md:-translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 md:w-10 md:h-10 bg-linear-to-br from-cyan-500 to-blue-600 md:from-cyan-500/20 md:to-purple-500/20 md:border md:border-cyan-500/30 rounded-full md:rounded-l-lg md:rounded-r-none flex items-center justify-center text-slate-950 md:text-cyan-400 hover:text-white md:hover:text-cyan-300 transition-all shadow-xl md:shadow-none z-20 font-bold text-xs"
+          className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 md:hidden z-floating-button w-12 h-12 sm:w-14 sm:h-14 bg-linear-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-slate-950 hover:text-white transition-all shadow-xl font-bold text-lg"
         >
-           {window.innerWidth < 768 ? "📊" : "→"}
+           📊
         </motion.button>
       )}
 
-      {/* SYSTEM MODALS & POPUPS */}
+      {/* DESKTOP SIDEBAR TOGGLE - Only on desktop */}
+      {isSidebarOpen && (
+        <motion.button 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setIsSidebarOpen(false)}
+          className="hidden md:flex absolute top-1/2 -translate-y-1/2 right-0 z-floating-button w-10 h-10 bg-linear-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 rounded-l-lg items-center justify-center text-cyan-400 hover:text-cyan-300 hover:border-cyan-500/50 transition-all hover:bg-linear-to-r hover:from-cyan-500/30 hover:to-purple-500/30"
+          title="Close panel (keyboard: ESC)"
+        >
+          <span>→</span>
+        </motion.button>
+      )}
+
+      {/* SYSTEM MODALS & POPUPS (Highest z-index) */}
       <WelcomePopup isOpen={isWelcomeOpen} onClose={() => setIsWelcomeOpen(false)} />
       <AboutSystem isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
     </div>
