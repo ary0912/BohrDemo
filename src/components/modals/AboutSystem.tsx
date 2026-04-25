@@ -10,88 +10,126 @@ const AboutSystem = ({ isOpen, onClose }: AboutSystemProps) => {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-2000 cursor-pointer"
+            className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm cursor-pointer"
+            style={{ zIndex: 2000 }}
           />
-          
-          {/* Modal */}
-          <div className="fixed inset-0 z-2001 flex items-center justify-center p-4 sm:p-6 pointer-events-none">
+
+          <div
+            className="fixed inset-0 flex items-center justify-center p-4 sm:p-6 pointer-events-none"
+            style={{ zIndex: 2001 }}
+          >
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="w-full max-w-2xl pointer-events-none"
+              className="w-full max-w-2xl pointer-events-auto"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="about-title"
             >
-              <div className="bohr-panel bg-white p-6 sm:p-8 md:p-10 pointer-events-auto overflow-hidden relative max-h-[85vh] md:max-h-[80vh] overflow-y-auto border border-slate-200 rounded-xl shadow-xl">
-              <div className="absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-gradient-to-tl from-cyan-50 to-blue-50 blur-[100px] rounded-full -mr-20 sm:-mr-32 -mt-32" />
-              
-              <div className="flex justify-between items-start mb-6 sm:mb-8 relative z-10 gap-3">
-                <div className="flex flex-col flex-1">
-                  <h2 className="text-label text-cyan-700">Technical Artifact</h2>
-                  <h1 className="text-xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-2">System Overview</h1>
+              <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xl max-h-[85vh] overflow-y-auto">
+                <div className="flex justify-between items-start mb-6 gap-3">
+                  <div>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-cyan-600">
+                      About This System
+                    </span>
+                    <h1 id="about-title" className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
+                      Methane Leak Intelligence
+                    </h1>
+                  </div>
+                  <button
+                    onClick={onClose}
+                    aria-label="Close dialog"
+                    className="w-8 h-8 shrink-0 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-700 hover:bg-slate-200 transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                      <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                  </button>
                 </div>
-                <button 
-                  onClick={onClose}
-                  className="w-10 h-10 shrink-0 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 hover:text-cyan-600 hover:border-cyan-300 transition-all active:scale-95"
-                >
-                  ✕
-                </button>
-              </div>
 
-              <div className="space-y-4 sm:space-y-6 relative z-10">
-                <section>
-                  <h3 className="text-label text-slate-500 mb-2 sm:mb-3 font-bold">Core Goal</h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    A real-time methane leak monitoring dashboard inspired by Bohr/Tectrac systems, designed to help engineers quickly detect, understand, and act on gas network issues.
-                  </p>
-                </section>
+                <div className="space-y-5">
+                  <Section title="Purpose">
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      A real-time methane leak monitoring dashboard built to demonstrate how utilities
+                      can monitor gas networks, detect high-risk leaks, and optimise field operations.
+                      Inspired by Bohr/Tectrac LDAR (Leak Detection and Repair) workflows.
+                    </p>
+                  </Section>
 
-                <section>
-                  <h3 className="text-label text-slate-500 mb-2 sm:mb-3 font-bold">Design Philosophy</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-2 bg-slate-50 p-3 rounded-lg border border-slate-200">
-                       <p className="text-xs font-bold text-cyan-700 uppercase tracking-tight">Inspiration</p>
-                       <p className="text-xs text-slate-600">Linear (clarity), Apple (minimalism), and Industrial function-first logic.</p>
+                  <Section title="Capabilities">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <CapabilityCard
+                        title="Geospatial Mapping"
+                        description="Interactive Leaflet map with severity-coded markers and detailed leak popups."
+                      />
+                      <CapabilityCard
+                        title="Live Telemetry"
+                        description="Real-time concentration charts with configurable action thresholds."
+                      />
+                      <CapabilityCard
+                        title="LDAR Compliance"
+                        description="Tracks detection status, flow rates, and compliance metrics per EU regulation."
+                      />
+                      <CapabilityCard
+                        title="Multi-Detector Support"
+                        description="Supports AMLD drive-by, handheld, and fixed sensor detection types."
+                      />
                     </div>
-                    <div className="space-y-2 bg-slate-50 p-3 rounded-lg border border-slate-200">
-                       <p className="text-xs font-bold text-cyan-700 uppercase tracking-tight">Principles</p>
-                       <p className="text-xs text-slate-600">Map-first UX, Data → Insight → Action, and consistent semantic spacing.</p>
+                  </Section>
+
+                  <Section title="Technology">
+                    <div className="flex flex-wrap gap-2">
+                      {["React 19", "TypeScript", "Tailwind CSS", "Leaflet", "Recharts", "Framer Motion", "GSAP", "Vite"].map(
+                        (tech) => (
+                          <span
+                            key={tech}
+                            className="px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-600"
+                          >
+                            {tech}
+                          </span>
+                        )
+                      )}
                     </div>
-                  </div>
-                </section>
+                  </Section>
 
-                <section>
-                  <h3 className="text-label text-slate-500 mb-2 sm:mb-3 font-bold">Tech Stack</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {["React", "TypeScript", "Tailwind CSS", "Leaflet", "Recharts", "Framer Motion", "GSAP"].map(tech => (
-                      <span key={tech} className="px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:text-cyan-700 hover:border-cyan-300 transition-all shadow-sm">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </section>
-
-                <div className="pt-4 sm:pt-6 border-t border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-50 p-4 rounded-lg">
-                  <p className="text-label text-slate-500">
-                    Developed for Bohr | Tectrac Operations
-                  </p>
-                  <div className="text-xs sm:text-sm font-bold text-white px-3 py-1.5 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-lg border border-cyan-700 shrink-0 shadow-sm">
-                    Ready for Staging
+                  <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                      Built for Bohr | Tectrac Operations
+                    </p>
+                    <span className="text-xs font-bold text-white px-3 py-1.5 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-lg shadow-sm">
+                      Production Ready
+                    </span>
                   </div>
                 </div>
               </div>
-            </div>
-          </motion.div>
-        </div>
+            </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>
   );
 };
+
+const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <section>
+    <h3 className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-2">
+      {title}
+    </h3>
+    {children}
+  </section>
+);
+
+const CapabilityCard = ({ title, description }: { title: string; description: string }) => (
+  <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+    <p className="text-xs font-bold text-slate-800 mb-1">{title}</p>
+    <p className="text-[11px] text-slate-500 leading-relaxed">{description}</p>
+  </div>
+);
 
 export default AboutSystem;

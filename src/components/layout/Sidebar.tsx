@@ -1,103 +1,151 @@
 import { NavLink } from "react-router-dom";
+import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
+const navItems = [
+  {
+    label: "Dashboard",
+    description: "Live monitoring",
+    path: "/",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
+        <rect x="9" y="1" width="6" height="4" rx="1" stroke="currentColor" strokeWidth="1.5" />
+        <rect x="1" y="9" width="6" height="4" rx="1" stroke="currentColor" strokeWidth="1.5" />
+        <rect x="9" y="7" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
+      </svg>
+    ),
+  },
+  {
+    label: "Survey Planning",
+    description: "Route management",
+    path: "#",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M2 3h12M2 7h8M2 11h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <circle cx="13" cy="11" r="2" stroke="currentColor" strokeWidth="1.5" />
+      </svg>
+    ),
+  },
+  {
+    label: "Alert Centre",
+    description: "Notifications",
+    path: "#",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M8 1v1M8 14v1M3 8H2M14 8h-1M4.5 4.5L3.8 3.8M11.5 4.5l.7-.7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.5" />
+      </svg>
+    ),
+  },
+  {
+    label: "Reports",
+    description: "LDAR compliance",
+    path: "#",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M4 1h6l4 4v10H4z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <path d="M10 1v4h4M7 8h4M7 11h4M5 8h.5M5 11h.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+];
+
 const Sidebar = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
   const navItemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
 
-  const nodes = [
-    { label: "Dashboard", sub: "Live Mesh", id: "mesh" },
-    { label: "Network Topology", sub: "Grid Analysis", id: "topo" },
-    { label: "Alert Matrix", sub: "Protocol v4.2", id: "alert" },
-    { label: "Sensor Health", sub: "10x Analytics", id: "health" },
-  ];
-
   useEffect(() => {
-    // Stagger animation on mount
-    if (navItemsRef.current) {
+    const items = navItemsRef.current.filter(Boolean);
+    if (items.length > 0) {
       gsap.fromTo(
-        navItemsRef.current.filter(Boolean),
+        items,
         { opacity: 0, x: -20 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.5,
-          stagger: 0.08,
-          ease: "power2.out"
-        }
+        { opacity: 1, x: 0, duration: 0.5, stagger: 0.08, ease: "power2.out" }
       );
     }
   }, []);
 
   return (
-    <div ref={containerRef} className="w-64 bohr-panel p-6 md:p-8 space-y-8 md:space-y-12 h-full flex flex-col bg-white border-r border-slate-200 overflow-y-auto shadow-sm">
-      <div className="space-y-3 md:space-y-4">
-        <h2 className="text-label text-slate-500">Command Nodes</h2>
-        
-        <div className="space-y-2">
-          {nodes.map((node, index) => (
-            <NavLink 
-              key={node.id}
-              ref={(el) => { navItemsRef.current[index] = el; }}
-              to={index === 0 ? "/" : "#"} 
-              className={({ isActive }) => 
-                `px-4 py-3 rounded-lg flex flex-col transition-all group relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${
-                  isActive && index === 0
-                  ? "bg-cyan-50 border border-cyan-100 shadow-sm" 
-                  : "hover:bg-slate-50 border border-transparent"
-                }`
-              }
-              aria-current={index === 0 ? "page" : undefined}
-            >
-              <span className={`text-sm font-bold tracking-tight transition-colors ${index === 0 ? "text-cyan-700" : "text-slate-600 group-hover:text-cyan-600"}`}>
-                {node.label}
-              </span>
-              <span className="text-xs font-bold uppercase tracking-[0.06em] text-slate-400 mt-1">
-                {node.sub}
-              </span>
-              {index === 0 && (
-                 <motion.div 
-                   animate={{ scale: [1, 1.2, 1] }}
-                   transition={{ duration: 2, repeat: Infinity }}
-                   className="absolute right-4 top-1/2 -translate-y-1/2 w-2 h-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full" 
-                   aria-hidden="true"
-                 />
-              )}
-            </NavLink>
-          ))}
+    <nav
+      aria-label="Main navigation"
+      className="w-60 bohr-panel p-5 space-y-6 h-full flex flex-col bg-white border-r border-slate-200 overflow-y-auto shadow-sm"
+    >
+      <div className="space-y-1">
+        <h2 className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 px-3 mb-2">
+          Navigation
+        </h2>
+        {navItems.map((item, index) => (
+          <NavLink
+            key={item.label}
+            ref={(el) => { navItemsRef.current[index] = el; }}
+            to={item.path}
+            className={({ isActive }) =>
+              `px-3 py-2.5 rounded-lg flex items-center gap-3 transition-all group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${
+                isActive && item.path === "/"
+                  ? "bg-cyan-50 border border-cyan-200 text-cyan-700"
+                  : "hover:bg-slate-50 border border-transparent text-slate-600 hover:text-slate-800"
+              }`
+            }
+            aria-current={item.path === "/" ? "page" : undefined}
+          >
+            <span className="shrink-0">{item.icon}</span>
+            <div className="flex flex-col min-w-0">
+              <span className="text-sm font-semibold leading-tight truncate">{item.label}</span>
+              <span className="text-[10px] text-slate-400 leading-tight truncate">{item.description}</span>
+            </div>
+            {item.path === "/" && (
+              <motion.div
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="ml-auto w-1.5 h-1.5 bg-cyan-500 rounded-full shrink-0"
+                aria-hidden="true"
+              />
+            )}
+          </NavLink>
+        ))}
+      </div>
+
+      <div className="pt-4 border-t border-slate-100">
+        <h2 className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 px-3 mb-2">
+          System
+        </h2>
+        <div className="space-y-3 px-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-slate-500">Detector Status</span>
+            <span className="text-xs font-semibold text-emerald-600">Online</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-slate-500">Last Survey</span>
+            <span className="text-xs font-semibold text-slate-700">2h ago</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-slate-500">Network Latency</span>
+            <span className="text-xs font-semibold text-slate-700">12ms</span>
+          </div>
         </div>
       </div>
-      
-      <div className="pt-6 md:pt-8 border-t border-slate-200">
-        <h2 className="text-label text-slate-500 mb-3 md:mb-4">System Analytics</h2>
-        <div className="bg-slate-50 p-4 rounded-lg border border-dashed border-slate-300 hover:border-cyan-300 transition-all">
-           <p className="text-xs text-slate-500 font-medium leading-relaxed text-center">
-             Cross-border telemetry visualization protocols (v2.1) ready for deployment.
-           </p>
-        </div>
-      </div>
-      
+
       <div className="flex-1" />
-      
-      <motion.div 
+
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-cyan-50 p-4 rounded-lg border border-cyan-100 flex items-center space-x-3 hover:border-cyan-200 transition-all shadow-sm"
+        className="bg-gradient-to-br from-cyan-50 to-blue-50 p-3.5 rounded-lg border border-cyan-100"
       >
-         <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center border border-cyan-200 shrink-0">
-           <div className="w-1.5 h-1.5 bg-cyan-500 rounded-full" />
-         </div>
-         <div className="flex flex-col min-w-0">
-            <span className="text-xs font-bold text-slate-700 tracking-tight">Mesh Latency</span>
-            <span className="text-xs text-cyan-600 font-bold">12ms (Optimal)</span>
-         </div>
+        <div className="flex items-center gap-2 mb-1.5">
+          <div className="w-2 h-2 bg-emerald-500 rounded-full" />
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-cyan-700">
+            EU Methane Reg.
+          </span>
+        </div>
+        <p className="text-[11px] text-slate-600 leading-relaxed">
+          Compliant with Regulation (EU) 2024/1787 LDAR requirements.
+        </p>
       </motion.div>
-    </div>
+    </nav>
   );
 };
-
-import { motion } from "framer-motion";
 
 export default Sidebar;
