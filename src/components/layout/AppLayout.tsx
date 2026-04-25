@@ -6,57 +6,54 @@ import { useState, useEffect } from "react";
 
 const AppLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => {
-      const newIsLarge = window.innerWidth >= 1024;
-      setIsLargeScreen(newIsLarge);
-      // Close mobile menu when resizing to large screen
-      if (newIsLarge && isMobileMenuOpen) {
-        setIsMobileMenuOpen(false);
-      }
+    const check = () => {
+      const large = window.innerWidth >= 1024;
+      setIsLargeScreen(large);
+      if (large) setIsMobileMenuOpen(false);
     };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [isMobileMenuOpen]);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   return (
-    <div className="h-screen flex flex-col bg-slate-50 text-slate-800 font-sans selection:bg-cyan-500/30 overflow-hidden">
+    <div className="h-screen flex flex-col bg-slate-50 text-slate-800 font-sans overflow-hidden">
       <Topbar onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
 
       <div className="flex flex-1 overflow-hidden relative">
-        {/* DESKTOP SIDEBAR */}
+        {/* Desktop sidebar */}
         {isLargeScreen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="p-4 md:p-6 pr-0 shrink-0 hidden lg:block"
+            className="p-4 pr-0 shrink-0 hidden lg:block"
           >
             <Sidebar />
           </motion.div>
         )}
 
-        {/* MOBILE SIDEBAR OVERLAY */}
+        {/* Mobile sidebar overlay */}
         <AnimatePresence>
           {!isLargeScreen && isMobileMenuOpen && (
             <>
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="absolute inset-0 bg-slate-950/70 backdrop-blur-md"
+                className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm"
                 style={{ zIndex: 100 }}
               />
-              <motion.div 
+              <motion.div
                 initial={{ x: "-100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "-100%" }}
                 transition={{ type: "spring", damping: 25, stiffness: 400 }}
-                className="absolute inset-y-0 left-0 w-72 p-4 overflow-y-auto"
+                className="absolute inset-y-0 left-0 w-64 p-4 overflow-y-auto"
                 style={{ zIndex: 101 }}
               >
                 <Sidebar />
@@ -65,14 +62,12 @@ const AppLayout = () => {
           )}
         </AnimatePresence>
 
-        <motion.main 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
+        <main
+          id="main-content"
           className="flex-1 overflow-hidden relative w-full"
         >
           <Outlet />
-        </motion.main>
+        </main>
       </div>
     </div>
   );

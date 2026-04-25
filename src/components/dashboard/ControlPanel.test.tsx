@@ -1,59 +1,58 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
-import ControlPanel from './ControlPanel';
+import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import ControlPanel from "./ControlPanel";
 
-describe('ControlPanel', () => {
-  it('renders correctly with default props', () => {
-    const onOpenAbout = vi.fn();
-    const onFilterChange = vi.fn();
-    
+describe("ControlPanel", () => {
+  it("renders all filter buttons", () => {
     render(
-      <ControlPanel 
-        onOpenAbout={onOpenAbout} 
-        activeFilter={null} 
-        onFilterChange={onFilterChange} 
-      />
+      <ControlPanel onOpenAbout={vi.fn()} activeFilter={null} onFilterChange={vi.fn()} />
     );
 
-    // Info button should render
-    expect(screen.getByText('System Info')).toBeInTheDocument();
-    
-    // Filter buttons should render
-    expect(screen.getByText('All')).toBeInTheDocument();
-    expect(screen.getByText('Alert')).toBeInTheDocument();
-    expect(screen.getByText('Warn')).toBeInTheDocument();
-    expect(screen.getByText('Safe')).toBeInTheDocument();
+    expect(screen.getByText("All")).toBeInTheDocument();
+    expect(screen.getByText("Action")).toBeInTheDocument();
+    expect(screen.getByText("Review")).toBeInTheDocument();
+    expect(screen.getByText("Nominal")).toBeInTheDocument();
   });
 
-  it('calls onFilterChange when a filter is clicked', () => {
-    const onOpenAbout = vi.fn();
+  it("calls onFilterChange with severity 5 when Action is clicked", () => {
     const onFilterChange = vi.fn();
-    
     render(
-      <ControlPanel 
-        onOpenAbout={onOpenAbout} 
-        activeFilter={null} 
-        onFilterChange={onFilterChange} 
-      />
+      <ControlPanel onOpenAbout={vi.fn()} activeFilter={null} onFilterChange={onFilterChange} />
     );
 
-    fireEvent.click(screen.getByText('Alert'));
+    fireEvent.click(screen.getByText("Action"));
     expect(onFilterChange).toHaveBeenCalledWith(5);
   });
 
-  it('calls onOpenAbout when info button is clicked', () => {
-    const onOpenAbout = vi.fn();
+  it("calls onFilterChange with null when All is clicked", () => {
     const onFilterChange = vi.fn();
-    
     render(
-      <ControlPanel 
-        onOpenAbout={onOpenAbout} 
-        activeFilter={null} 
-        onFilterChange={onFilterChange} 
-      />
+      <ControlPanel onOpenAbout={vi.fn()} activeFilter={5} onFilterChange={onFilterChange} />
     );
 
-    fireEvent.click(screen.getByRole('button', { name: /system info/i }));
+    fireEvent.click(screen.getByText("All"));
+    expect(onFilterChange).toHaveBeenCalledWith(null);
+  });
+
+  it("calls onOpenAbout when info button is clicked", () => {
+    const onOpenAbout = vi.fn();
+    render(
+      <ControlPanel onOpenAbout={onOpenAbout} activeFilter={null} onFilterChange={vi.fn()} />
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /system information/i }));
     expect(onOpenAbout).toHaveBeenCalledTimes(1);
+  });
+
+  it("marks active filter with aria-pressed", () => {
+    render(
+      <ControlPanel onOpenAbout={vi.fn()} activeFilter={null} onFilterChange={vi.fn()} />
+    );
+
+    const allBtn = screen.getByRole("button", { name: "All" });
+    expect(allBtn).toHaveAttribute("aria-pressed", "true");
+
+    const actionBtn = screen.getByRole("button", { name: "Action" });
+    expect(actionBtn).toHaveAttribute("aria-pressed", "false");
   });
 });
